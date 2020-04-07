@@ -32,6 +32,15 @@ function validateUser(user){
     return Joi.validate(user,scheme)
 
 }
+function validateCode(code){
+    const scheme = {
+        oldcode:Joi.string().required(),
+        newcode:Joi.string().required().min(8).max(16).disallow(Joi.ref('oldcode')),
+    };
+    return Joi.validate(code,scheme)
+
+}
 
 exports.User = User
-exports.validator = validateUser
+exports.validateUser = validateUser
+exports.validateCode = validateCode
