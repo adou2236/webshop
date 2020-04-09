@@ -18,7 +18,9 @@ const userSchema = new mongoose.Schema({
         required:true,
         min:8,
         max:16,
-    }
+    },
+    resiver: [{type: mongoose.Schema.Types.ObjectId, ref: 'resiver'}],
+
 })
 
 const User = mongoose.model("user",userSchema)

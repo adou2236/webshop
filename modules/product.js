@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema({
         type:String
     },
     category:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"category"
     },
     updateTime: {//更新时间（排序用）
@@ -48,7 +48,7 @@ const Product = mongoose.model("product",productSchema)
 
 function validateProduct(product){
     const scheme = {
-        name:Joi.string().min(3).max(25).required(),
+        name:Joi.string().min(1).max(50).required(),
         cover:Joi.string(),
         count:Joi.number().min(0),
         price:Joi.number().min(0.01).required(),

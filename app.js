@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');//用户相关
 var categories = require('./routes/categories');//商品类型
 var products = require('./routes/products');//商品相关
+var resiver = require('./routes/resiver');//收件地址相关
+var order = require('./routes/order');//订单相关
 
 var app = express();
 
@@ -26,6 +28,8 @@ app.use('/users', usersRouter);
 // app.use('/admins',adminRouter)
 app.use('/categories',categories)
 app.use('/products',products)
+app.use('/resiver',resiver)
+app.use('/order',order)
 
 
 // catch 404 and forward to error handler

@@ -31,7 +31,6 @@ router.post("/resign",async(req,res)=>{
         })
       } catch (error) {
         res.status(400).send("注册失败")
-        
       }
     }
   }
@@ -97,6 +96,7 @@ router.put("/passowrd/:name",async(req,res)=>{
 })
 
 //修改用户其他信息
+//购物车变更
 
 
 module.exports = router;

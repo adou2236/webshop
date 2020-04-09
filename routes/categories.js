@@ -34,7 +34,7 @@ router.post('/newcategory',async(req,res)=>{
         const result = newCategory.save()
         res.send(normalRes("新增成功",true,result))
       } catch (error) {
-        res.status(400).send(normalRes("新增失败",false))
+        res.status(400).send(normalRes("新增失败",false,error))
         
       }
     }
