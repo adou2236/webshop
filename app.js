@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');//用户相关
+var adminRouter = require('./routes/admin');//管理员相关
 var categories = require('./routes/categories');//商品类型
 var products = require('./routes/products');//商品相关
 var resiver = require('./routes/resiver');//收件地址相关
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/admins',adminRouter)
+app.use('/admin',adminRouter)
 app.use('/categories',categories)
 app.use('/products',products)
 app.use('/resiver',resiver)

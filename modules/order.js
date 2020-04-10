@@ -17,7 +17,7 @@ const orderSchema = new mongoose.Schema({
     },
     payMethod: {
         type:String,
-        enum:["wechat","ailpay"]
+        enum:["0","1"]//0微信支付1支付宝支付
     },//支付方式
     // deliverMethod: String,//快递方式
     createTime: {//订单创建时间
@@ -58,7 +58,7 @@ function validateOrder(order){
     const scheme = {
         orderUser:Joi.string().required(),
         resiver:Joi.string().required(),
-        payMethod:Joi.string().valid(['wechat', 'ailpay']),
+        payMethod:Joi.string().valid(['0', '1']),
         goodsList:Joi.array()
     };
     return Joi.validate(order,scheme)
