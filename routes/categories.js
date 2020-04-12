@@ -23,7 +23,7 @@ router.post('/newcategory',async(req,res)=>{
   }else{
     const isRepid =await Category.find({name:req.body.name})
     if(isRepid.length!==0){
-      res.send(normalRes("该分类已存在"))
+      res.status(400).send(normalRes("该分类已存在"))
     }
     else{
       const newCategory = new Category({

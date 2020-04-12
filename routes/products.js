@@ -23,7 +23,7 @@ router.get('/',async(req,res)=>{
   const count = await Product.find(cateType).count()
   const allProduct = await Product.find(cateType)
                                   .sort(sortType)
-                                  .populate({path: 'category', select: 'name -_id'})
+                                  .populate({path: 'category', select: 'name'})
                                   .select({__v:0})
                                   .limit(pageNumber)
                                   .skip((pages-1)*pageNumber)
