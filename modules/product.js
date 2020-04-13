@@ -1,5 +1,7 @@
 const Joi = require("joi")//验证模块
 const mongoose = require("mongoose")
+const moment = require('moment');
+
 
 mongoose.connect("mongodb://localhost/webshop")
     .then(()=>{console.log("mongodb connect cuccessfully")})

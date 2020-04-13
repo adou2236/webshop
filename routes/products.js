@@ -3,25 +3,30 @@ const {normalRes} = require("../modules/normalRES")
 const router = express.Router()
 const {Product,validateProduct} = require("../modules/product")
 const {Category} = require("../modules/category")
+const moment = require('moment');
 
 
 
 //商品展示
 router.get('/',async(req,res)=>{
-  let cateType = {}//若商品类别为空则查找所有商品
+  let condition = {}//查询条件为空则查所有
   if(req.query.category){
-    cateType={category:req.query.category}
+    condition.category = req.query.category
   }
   let sortType = {updateTime: -1}//若排序凡是为空则按更新时间排序
   if(req.query.sort){
     sortType={}
     sortType[req.query.sort]=req.query.order//升序或降序1升序-1降序
   }
-  console.log(sortType)
+  if( req.query.details ){
+    const regex = new RegExp(req.query.details, 'i');//返回正则表达式，不区分大小写
+    condition.name = regex
+  }
+  console.log(condition)
   let pages = req.query.pages//页码
   const pageNumber = 10
-  const count = await Product.find(cateType).count()
-  const allProduct = await Product.find(cateType)
+  const count = await Product.find(condition).count()
+  const allProduct = await Product.find(condition)
                                   .sort(sortType)
                                   .populate({path: 'category', select: 'name'})
                                   .select({__v:0})

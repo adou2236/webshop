@@ -2,6 +2,8 @@ const express = require("express")
 const {normalRes} = require("../modules/normalRES")
 const router = express.Router()
 const {Category,validateCategory} = require("../modules/category")
+const moment = require('moment');
+
 
 
 //列出所有分类
@@ -31,6 +33,7 @@ router.post('/newcategory',async(req,res)=>{
         updateTime: Date.now()
       })
       try {
+        console.log("新的东西",newCategory)
         const result = newCategory.save()
         res.send(normalRes("新增成功",true,result))
       } catch (error) {

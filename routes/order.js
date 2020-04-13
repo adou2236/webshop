@@ -8,13 +8,22 @@ const createOrderId = require("../tools/createOrder")
 // 列出用户所有订单
 router.get('/',async(req,res)=>{
   const option = {}
-  option.orderUser = req.query.orderUser
-  if(req.query.status!=='0'){ //0查询全部，1待支付，2支付成功，3超时失效
+  let pages = req.query.pages//页码
+  const pageNumber = 10
+  if(req.query.orderUser){ //不传查所有
+    option.orderUser = req.query.orderUser
+  }
+  if(req.query.status){ //不传查所有0支付成功，1待支付，2失效
     option.status = req.query.status
   }
-  console.log(option)
-  const orderList = await Order.find(option).sort({createTime:-1}).populate({path: 'resiver product'})
-  res.send(normalRes("查询完毕",true,orderList))
+  if(req.query.payMethod){
+    option.payMethod = req.query.payMethod//0微信，1支付宝
+  }
+  const count =  await Order.find(option).count()
+  const orderList = await Order.find(option).sort({createTime:-1})
+                                .populate({path: 'resiver'}).populate({path: 'product', select: 'name -_id'}).populate({path: 'user', select: 'name -_id'})
+                                .limit(pageNumber).skip((pages-1)*pageNumber)
+  res.send(normalRes("查询完毕",true,{orderList:orderList,count:count}))
 })
 
 
