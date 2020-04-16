@@ -33,6 +33,8 @@ router.get('/',async(req,res)=>{
                                   .limit(pageNumber)
                                   .skip((pages-1)*pageNumber)
   if(count!==0){
+    // res.status(400).send(normalRes("暂无商品"))
+
       res.send(normalRes("查询完毕",true,{count:count,data:allProduct}))
   }else{
       res.status(400).send(normalRes("暂无商品"))

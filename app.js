@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');//用户相关
+var usersRouter = require('./routes/user');//用户相关
 var adminRouter = require('./routes/admin');//管理员相关
 var categories = require('./routes/categories');//商品类型
 var products = require('./routes/products');//商品相关

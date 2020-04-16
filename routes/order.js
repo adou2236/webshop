@@ -3,6 +3,8 @@ const {normalRes} = require("../modules/normalRES")
 const router = express.Router()
 const {Order,validateOrder} = require("../modules/order")
 const createOrderId = require("../tools/createOrder")
+var ObjectID = require('mongodb').ObjectID;
+const {Product} = require("../modules/product")
 
 
 // 列出用户所有订单
@@ -13,33 +15,48 @@ router.get('/',async(req,res)=>{
   if(req.query.orderUser){ //不传查所有
     option.orderUser = req.query.orderUser
   }
-  if(req.query.status){ //不传查所有0支付成功，1待支付，2失效
+  if(req.query.status){ //不传查所有,0支付成功，1待支付，2失效
     option.status = req.query.status
   }
   if(req.query.payMethod){
     option.payMethod = req.query.payMethod//0微信，1支付宝
   }
-  const count =  await Order.find(option).count()
-  const orderList = await Order.find(option).sort({createTime:-1})
-                                .populate({path: 'resiver'}).populate({path: 'product', select: 'name -_id'}).populate({path: 'user', select: 'name -_id'})
-                                .limit(pageNumber).skip((pages-1)*pageNumber)
-  res.send(normalRes("查询完毕",true,{orderList:orderList,count:count}))
+  if(req.query.orderId){
+    option.orderId = req.query.orderId//订单号
+  }
+  try {
+    const count =  await Order.find(option).count()
+    console.log("option",option)
+    const orderList = await Order.find(option).sort({createTime:-1})
+                                  .populate({path: 'resiver',select:'phone areaAddress detailAddress name'})
+                                  .populate({path:'orderUser',select: 'name _id'})
+                                  .populate({path:'goodsList.product',select: 'name _id price cover' })
+                                  .select("-__v")
+                                  .limit(pageNumber).skip((pages-1)*pageNumber)
+    res.send(normalRes("查询完毕",true,{orderList:orderList,count:count}))
+  } catch (error) {
+    res.send(normalRes("查询错误",false))
+  }
+ 
 })
 
 
 //创建新订单
 router.post('/newOrder',async(req,res)=>{
-    const {error} = validateOrder(req.body)
+  const {error} = validateOrder(req.body)
   if(error){
     res.status(400).send({message:error.details[0].message})
   }else{
-    let order = {}
+    let order = {} 
+    
     Object.keys(req.body).forEach(function (key) {
         order[key] = req.body[key]
     });
-    order.orderId = createOrderId(req.body.orderUser,req.body.payMethod)
-    order.totalMoney = 250
-    let newOrder =await new Order(order)
+    order.orderId =await createOrderId(req.body.orderUser,req.body.payMethod)
+    let value =await getMoney(req.body.goodsList)
+    order.totalMoney = value.goodsList
+    order.totalMoney =value.totalMoney
+    let newOrder = new Order(order)
     try {
         const result =await newOrder.save()
         res.send(normalRes("订单创建成功",true,result))
@@ -48,5 +65,19 @@ router.post('/newOrder',async(req,res)=>{
     }
   }
 })
+
+async function getMoney(ArrList){
+  let goodsList = []
+  let totalMoney = 0
+  for(let i=0;i<ArrList.length;i++){
+     let tempProd = ArrList[i]
+    let csa = await Product.findById({_id:ArrList[i].product})
+    tempProd.payPrice = csa.price*csa.discount
+    goodsList.push(tempProd)
+    totalMoney+=tempProd.payPrice*ArrList[i].sum
+  }
+  console.log(goodsList,totalMoney)
+  return {goodsList,totalMoney}
+}
 
 module.exports = router;

@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
     },
     resiver:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:"resiver"
+        ref: "resiver"
     },
     payMethod: {
         type:String,
@@ -26,15 +26,14 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    orderUser: {//下单用户
+    orderUser:{//下单用户
         type: mongoose.Schema.Types.ObjectId,
-        required:true,
         ref: "user"
     },
     goodsList: [
         {product: {type: mongoose.Schema.Types.ObjectId, ref: 'product'}, 
         sum: Number,
-        discount:Number, 
+        payPrice:Number, 
         _id: false}],//订单详情（商品，数量，折扣）
     status: {//订单状态
         type: Number, 
@@ -44,13 +43,6 @@ const orderSchema = new mongoose.Schema({
         type:Number,
         required:true
     }
-    // cost: {
-    //     freight: {type: Number, default: 0},
-    //     rebate: {type: Number, default: 0},
-    //     serviceCharge: {type: Number, default: 0},
-    // }
-    
-   
 })
 
 const Order = mongoose.model("order",orderSchema)
@@ -66,6 +58,10 @@ function validateOrder(order){
     return Joi.validate(order,scheme)
 
 }
+
+
+
+
 
 exports.Order = Order
 exports.validateOrder = validateOrder

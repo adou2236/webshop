@@ -26,12 +26,12 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("user",userSchema)
 
 
-function validateUser(user){
+function validateUser(User){
     const scheme = {
         name:Joi.string().min(3).max(25).required(),
         password:Joi.string().required().min(8).max(16),
     };
-    return Joi.validate(user,scheme)
+    return Joi.validate(User,scheme)
 
 }
 function validateCode(code){
