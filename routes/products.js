@@ -42,6 +42,17 @@ router.get('/',async(req,res)=>{
 })
 
 
+//商品详情
+router.get('/:id',async(req,res)=>{
+  const result = await Product.findById(req.params.id)
+  if(!result){
+    res.status(404).send(normalRes("不存在该商品"))
+  }else{
+    res.send(normalRes("success",true,result))
+  }
+
+
+})
 //添加新商品
 router.post('/newproduct',async(req,res)=>{
     const {error} = validateProduct(req.body)

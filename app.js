@@ -11,6 +11,7 @@ var categories = require('./routes/categories');//商品类型
 var products = require('./routes/products');//商品相关
 var resiver = require('./routes/resiver');//收件地址相关
 var order = require('./routes/order');//订单相关
+var toolRouter = require('./routes/tools');//其他工具
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use('/categories',categories)
 app.use('/products',products)
 app.use('/resiver',resiver)
 app.use('/order',order)
+app.use('/tools',toolRouter)
 
 
 // catch 404 and forward to error handler
