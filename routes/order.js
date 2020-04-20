@@ -72,7 +72,7 @@ async function getMoney(ArrList){
   for(let i=0;i<ArrList.length;i++){
      let tempProd = ArrList[i]
     let csa = await Product.findById({_id:ArrList[i].product})
-    tempProd.payPrice = csa.price*csa.discount
+    tempProd.payPrice = (csa.price*csa.discount).toFixed(2)
     goodsList.push(tempProd)
     totalMoney+=tempProd.payPrice*ArrList[i].sum
   }

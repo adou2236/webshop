@@ -7,7 +7,7 @@ const {normalRes} = require("../modules/normalRES")
 //获得当前用户的地址列表
 router.get('/', async(req, res) => {
     const userId = req.query.userId;
-    const Arrlist = await Resiver.find({userId:userId}).sort({sort:-1})
+    const Arrlist = await Resiver.find({userId:userId}).sort({sort:-1}).select('-userId -__v')
     if(Arrlist.length===0){
         res.send(normalRes("无地址",false,Arrlist))
     }

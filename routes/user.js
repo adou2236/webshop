@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt")//密码加密存入数据库
 const router = express.Router()
 const {User,validateUser , validateCode} = require("../modules/user")
 const jwt = require("jsonwebtoken")
+const {normalRes} = require("../modules/normalRES")
+
 
 
 
@@ -41,11 +43,11 @@ router.post("/resign",async(req,res)=>{
 router.post("/login",async(req,res)=>{
   const {error} = validateUser(req.body)
   if(error){
-    res.status(400).send({message:error.details[0].message})
+    res.status(400).send(normalRes(error.details[0].message,false))
   }else{
     const secuser = await User.find({name:req.body.name})
     if(secuser.length===0){
-      res.status(404).send({message:"用户不存在"})
+      res.status(404).send(normalRes("用户不存在",false))
     }
     else{
       const secpas = secuser[0].password
@@ -53,15 +55,10 @@ router.post("/login",async(req,res)=>{
         const token = jwt.sign(
           {name: req.body.name},'suzhen',{expiresIn: 60 * 60}
         )
-        res.send({
-          message:"登录成功",
-          token:token
-        })
+        res.send(normalRes("登录成功",true,{name:secuser[0].name,userId:secuser[0]._id,token:token}))
       }
       else{
-        res.send({
-          message:"密码错误",
-        })
+        res.status(400).send(normalRes("密码错误",false))
       }
     }
   }
