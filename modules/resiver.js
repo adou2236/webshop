@@ -50,7 +50,8 @@ function validateResiver(Resiver){
         phone:Joi.string().required().length(11).regex(/^1/),
         areaAddress:Joi.string(),
         detailAddress:Joi.string(),
-        userId:Joi.string()
+        userId:Joi.string(),
+        _id:Joi.string().allow(''),
     };
     return Joi.validate(Resiver,scheme)
 

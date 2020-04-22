@@ -51,8 +51,10 @@ router.post("/updateAddress",async(req,res)=>{
                     const result = await selectdUser.save()
                     console.log("result",result)
                     const result2 = await newAddress.save()
+                    console.log("err",result2)
                     res.send(normalRes("添加成功",true,result))
                 } catch (error) {
+                    console.log(error)
                     res.status(400).send(normalRes("添加失败",false,error))
                 }
             }
