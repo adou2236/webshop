@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const {Rate}  = require("../modules/message")
+const {Banner} = require("../modules/banner")
 const {normalRes} = require("../modules/normalRES")
 
 
@@ -27,6 +28,35 @@ router.post("/rate",async(req,res)=>{
     }
     res.send()
 })
+
+//添加banner图
+router.post("/banner",async(req,res)=>{
+    let obj ={}
+    Object.keys(req.body).forEach(function (key) {
+        obj[key] = req.body[key]
+    });
+    let newBanner = new Banner(obj)  
+    try {
+        const result = await newBanner.save()
+        res.send(normalRes("添加成功",true,result))        
+    } catch (error) {
+        res.status(400).send(normalRes("添加失败",false,error))
+    }
+})
+
+
+//banner图
+router.get("/banner",async(req,res)=>{
+    const result = await Banner.find().populate({path: 'prodId' ,select: '_id name cover'}).select("-__v")
+    res.send(normalRes("查询成功",true,result))
+})
+
+
+//删除banner
+// router.delete("/banner",async(req,res)=>{
+//     const result = await Banner.find().populate({path: 'prodId' ,select: '_id name cover'}).select("-__v")
+//     res.send(normalRes("查询成功",true,result))
+// })
 
 
 

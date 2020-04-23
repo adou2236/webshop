@@ -15,7 +15,7 @@ router.get('/',async(req,res)=>{
   if(req.query.orderUser){ //不传查所有
     option.orderUser = req.query.orderUser
   }
-  if(req.query.status){ //不传查所有,0支付成功，1待支付，2失效
+  if(req.query.status){ //不传查所有,1支付成功，0待支付，2失效
     option.status = req.query.status
   }
   if(req.query.payMethod){

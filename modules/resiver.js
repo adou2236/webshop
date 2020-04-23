@@ -22,7 +22,7 @@ const resiverSchema = new mongoose.Schema({
         required:true,
         validate: {//验证器
             validator: function(v) {
-                return /^1/.test(v)&&v.length===11;
+                return /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(v)&&v.length===11;
             },message: `手机号错误`
         }
     },
@@ -47,7 +47,7 @@ const Resiver = mongoose.model("resiver",resiverSchema)
 function validateResiver(Resiver){
     const scheme = {
         name:Joi.string().min(1).max(25).required(),
-        phone:Joi.string().required().length(11).regex(/^1/),
+        phone:Joi.string().required().length(11).regex(/^(?:(?:\+|00)86)?1[3-9]\d{9}$/),
         areaAddress:Joi.string(),
         detailAddress:Joi.string(),
         userId:Joi.string(),
