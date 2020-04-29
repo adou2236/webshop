@@ -81,6 +81,8 @@ router.put('/correctPay',async(req,res)=>{
   
 })
 
+
+//将订单置位失效
 router.put('/overTime',async(req,res)=>{
   if(req.body.orderId){
     let orderId = req.body.orderId
@@ -92,7 +94,20 @@ router.put('/overTime',async(req,res)=>{
       res.send(normalRes("设置成功",false))
     }
   }
-  
+})
+
+//删除失效订单
+router.delete('/removeOrder',async(req,res)=>{
+  if(req.body.orderId){
+    let orderId = req.body.orderId
+    let result = await Order.deleteOne({orderId:orderId,status:2});
+    if(result.deletedCount!==0){
+      res.send(normalRes("删除成功",true,result))
+    }
+    else{
+      res.status(400).send(normalRes("删除失败",false))
+    }
+  }
 })
 
 async function getMoney(ArrList){
