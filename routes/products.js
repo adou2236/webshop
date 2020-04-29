@@ -59,17 +59,18 @@ router.post('/newproduct',async(req,res)=>{
   if(error){
     res.status(400).send({message:error.details[0].message})
   }else{
-    const newProduct = new Product({
-        name:req.body.name,
-        price:req.body.price,
-        cover:req.body.cover,
-        category:req.body.category,
-        updateTime: Date.now()
-    })
+    let newProduct =new Product()
+    Object.keys(req.body).forEach(function (key) {
+      newProduct[key] = req.body[key]
+    });
+    newProduct.updateTime=Date.now()
+    console.log(newProduct)
+
     try {
       const result =await newProduct.save()
       res.send(normalRes("新增成功",true,result))
     } catch (error) {
+      console.log(error)
       res.status(400).send(normalRes("新增失败",false,error))
     }
   }

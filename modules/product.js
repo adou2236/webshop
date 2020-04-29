@@ -34,6 +34,10 @@ const productSchema = new mongoose.Schema({
     cover:{
         type:String
     },
+    describe:{
+        type:String,
+        max:255,
+    },
     category:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"category"
@@ -54,6 +58,7 @@ function validateProduct(product){
         cover:Joi.string(),
         count:Joi.number().min(0),
         price:Joi.number().min(0.01).required(),
+        describe:Joi.string().max(255).allow(''),
         category:Joi.string(),
         discount:Joi.number().min(0.1).max(0.9)
     };

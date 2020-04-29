@@ -66,6 +66,35 @@ router.post('/newOrder',async(req,res)=>{
   }
 })
 
+//成功付款
+router.put('/correctPay',async(req,res)=>{
+  if(req.body.orderId){
+    let orderId = req.body.orderId
+    let result = await Order.updateOne({orderId:orderId},{$set:{status:1}});
+    if(result){
+      res.send(normalRes("支付成功",true,result))
+    }
+    else{
+      res.send(normalRes("支付失败",false))
+    }
+  }
+  
+})
+
+router.put('/overTime',async(req,res)=>{
+  if(req.body.orderId){
+    let orderId = req.body.orderId
+    let result = await Order.updateOne({orderId:orderId},{$set:{status:2}});
+    if(result){
+      res.send(normalRes("设置成功",true,result))
+    }
+    else{
+      res.send(normalRes("设置成功",false))
+    }
+  }
+  
+})
+
 async function getMoney(ArrList){
   let goodsList = []
   let totalMoney = 0
