@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 
-mongoose.connect("mongodb://localhost/webshop")
-    .then(()=>{console.log("mongodb connect cuccessfully")})
-    .catch((error)=>{console.log(error)})
+// mongoose.connect("mongodb://localhost/webshop")
+//     .then(()=>{console.log("mongodb connect cuccessfully")})
+//     .catch((error)=>{console.log(error)})
 
 
 const rateSchema = new mongoose.Schema({

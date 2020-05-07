@@ -47,10 +47,10 @@ router.post("/login",async(req,res)=>{
     else{
       const secpas = secAdmin[0].password
       if(bcrypt.compareSync(req.body.password, secpas)){//将加密密码进行对比
-        const token = jwt.sign(
+        const adminToken = jwt.sign(
           {name: req.body.name},'admin',{expiresIn: 60 * 60}
         )
-        res.send(normalRes("登录成功",true,{token:token}))
+        res.send(normalRes("登录成功",true,{adminToken:adminToken}))
       }
       else{
         res.send(normalRes("密码错误",false))

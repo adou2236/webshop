@@ -53,7 +53,7 @@ router.post("/login",async(req,res)=>{
       const secpas = secuser[0].password
       if(bcrypt.compareSync(req.body.password, secpas)){//将加密密码进行对比
         const token = jwt.sign(
-          {name: req.body.name},'suzhen',{expiresIn: 60 * 60}
+          {name: req.body.name},'customer',{expiresIn: 60 * 1}
         )
         res.send(normalRes("登录成功",true,{name:secuser[0].name,userId:secuser[0]._id,token:token}))
       }
@@ -90,6 +90,27 @@ router.put("/passowrd/:name",async(req,res)=>{
       })
     }
   }
+})
+
+
+//重置密码
+router.put("/reset",async(req,res)=>{
+  const id = req.body.id
+  const changeingUser = await User.findById(id)
+  if(changeingUser){
+    changeingUser.password = bcrypt.hashSync('12345678',2)
+    result = await changeingUser.save()
+    res.status(200).send(normalRes("修改成功",true,changeingUser))
+  }else{
+    res.status(400).send(normalRes("用户不存在",false))
+  }
+})
+
+
+//获取所有用户
+router.get("/allUser",async(req,res)=>{
+  const allUser =await User.find().select("name _id")
+  res.send(normalRes("查询完成",false,allUser))  
 })
 
 

@@ -68,6 +68,7 @@ router.post('/newOrder',async(req,res)=>{
 
 //成功付款
 router.put('/correctPay',async(req,res)=>{
+  console.log("进来了")
   if(req.body.orderId){
     let orderId = req.body.orderId
     let result = await Order.updateOne({orderId:orderId},{$set:{status:1}});

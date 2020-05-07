@@ -45,7 +45,7 @@ router.post("/banner",async(req,res)=>{
 })
 
 
-//banner图
+//获取banner图
 router.get("/banner",async(req,res)=>{
     const result = await Banner.find().populate({path: 'prodId' ,select: '_id name cover'}).select("-__v")
     res.send(normalRes("查询成功",true,result))
@@ -56,7 +56,7 @@ router.get("/banner",async(req,res)=>{
 router.delete("/banner/:id",async(req,res)=>{
     const result =await Banner.findByIdAndRemove(req.params.id)
   if(!result){
-    res.status(404).send(normalRes("该banner不存在"))
+    res.status(404).send(normalRes("该banner不存在",false))
   }else{
     res.send(normalRes("删除成功",true,result))
   }
